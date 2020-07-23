@@ -2,12 +2,14 @@ import React from "react";
 import styled from "styled-components";
 
 const Item = ({ itemInfo, numOwned, handleClick }) => {
-  const { id, name, cost, value } = itemInfo;
+  const { name, cost, value } = itemInfo;
   return (
     <ItemContainer onClick={handleClick}>
       <div>
         <h4>{name}</h4>
-        <span>Cost:{cost}</span>
+        <span>
+          Cost: {cost} cookie(s). Produces {value} cookies/second.
+        </span>
       </div>
       <span>{numOwned}</span>
     </ItemContainer>
@@ -16,16 +18,31 @@ const Item = ({ itemInfo, numOwned, handleClick }) => {
 
 const ItemContainer = styled.button`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   border: none;
+  border-bottom: solid thin grey;
   background: transparent;
   cursor: pointer;
   color: #fff;
-  background div {
-    display: block;
+  width: 600px;
+  height: 100px;
+  padding: 1rem;
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     margin: 0.5rem;
+    width: 80%;
+  }
+  div h4 {
+    font-size: 1.75rem;
+  }
+  div span {
+    font-size: 1.25rem;
   }
   > span {
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
 `;
 export default Item;
