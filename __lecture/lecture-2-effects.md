@@ -148,10 +148,22 @@ Update the following snippets to make use of `useEffect`
 ---
 
 ```js
+//Without useEffect
 const App = () => {
   const [count, setCount] = React.useState(0);
 
   document.title = `You have clicked ${count} times`;
+
+  return <button onClick={() => setCount(count + 1)}>Increment</button>;
+};
+
+//With useEffect
+const App = () => {
+  const [count, setCount] = React.useState(0);
+
+  React.useEffect(() => {
+    document.title = `You have clicked ${count} times`;
+  }, [count]);
 
   return <button onClick={() => setCount(count + 1)}>Increment</button>;
 };
@@ -160,6 +172,7 @@ const App = () => {
 ---
 
 ```js
+//Without useEffect
 const App = ({ color }) => {
   const [value, setValue] = React.useState(false);
 
@@ -173,17 +186,48 @@ const App = ({ color }) => {
     </div>
   );
 };
+
+//With useEffect
+const App = ({ color }) => {
+  const [value, setValue] = React.useState(false);
+
+  React.useEffect(() => {
+    window.localStorage.setItem("value", value);
+    window.localStorage.setItem("color", color);
+  }, [value, color]);
+
+  return (
+    <div>
+      Value: {value}
+      <button onClick={() => setValue(!value)}>Toggle thing</button>
+    </div>
+  );
+};
 ```
 
 ---
 
 ```js
+//without useEffect
 const Modal = ({ handleClose }) => {
   window.addEventListener("keydown", (ev) => {
     if (ev.code === "Escape") {
       handleClose();
     }
   });
+
+  return <div>Modal stuff</div>;
+};
+
+//with useEffect
+const Modal = ({ handleClose }) => {
+  React.useEffect(() => {
+    window.addEventListener("keydown", (ev) => {
+      if (ev.code === "Escape") {
+        handleClose();
+      }
+    });
+  }, []);
 
   return <div>Modal stuff</div>;
 };
@@ -379,6 +423,38 @@ const App = ({ path }) => {
     </div>
   );
 };
+
+//refactored
+//use <-- allows you to use a custom hook. Your function MUST include a React Hook
+const useData = () {
+  const [mousePosition, setMousePosition] = React.useState({
+    x: null,
+    y: null,
+  });
+
+  React.useEffect(() => {
+    const handleMousemove = (ev) => {
+      setMousePosition({ x: ev.clientX, y: ev.clientY });
+    };
+
+    window.addEventListener("mousemove", handleMousemove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMousemove);
+    };
+  }, []);
+  return mousePosition;
+}
+const App = ({ path }) => {
+  const mousePosition = useData();
+return (
+    <div>
+      The mouse is at {mousePosition.x}, {mousePosition.y}.
+    </div>
+  );
+}
+
+}
 ```
 
 </div>
