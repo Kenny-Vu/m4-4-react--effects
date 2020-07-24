@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 import cookieSrc from "../cookie.svg";
 import Item from "./Item";
+import useInterval from "../hooks/use-interval.hook";
 
 const items = [
   { id: "cursor", name: "Cursor", cost: 10, value: 1 },
@@ -19,6 +20,7 @@ const Game = () => {
     grandma: 0,
     farm: 0,
   });
+
   return (
     <Wrapper>
       <GameArea>
@@ -42,18 +44,11 @@ const Game = () => {
                 itemInfo={item}
                 handleClick={(event) => {
                   if (cookie >= item.cost) {
-                    let numOwned = purchasedItems[`${item.id}`];
-                    let itemKey = Object.keys(purchasedItems)[index];
-                    let test = purchasedItems;
-                    //IT WORKS, BUT THIS IS A BAD WAY TO DO IT, GET HELP TO FIX IT
-                    test[`${itemKey}`] = numOwned + 1;
-                    console.log(test);
-                    // setPurchasedItems({
-                    //   ...purchasedItems,
-                    //   test: numOwned + 1,
-                    // });
                     setCookie(cookie - item.cost);
-                    console.log(purchasedItems);
+                    setPurchasedItems({
+                      ...purchasedItems,
+                      [item.id]: purchasedItems[item.id] + 1,
+                    });
                   } else window.alert("not enough cookies...");
                 }}
                 numOwned={purchasedItems[`${item.id}`]}
