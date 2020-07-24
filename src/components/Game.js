@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -28,7 +28,6 @@ const Game = () => {
     grandma: 0,
     farm: 0,
   });
-
   const CookiesPerTick =
     purchasedItems.cursor +
     purchasedItems.grandma * 10 +
@@ -41,6 +40,18 @@ const Game = () => {
       "en-CA"
     )} cookies - Cookie Clicker Workshop`;
   }, 1000);
+
+  useEffect(() => {
+    const handleKeydown = (ev) => {
+      if (ev.code === "Space") {
+        setCookie(cookie + 1);
+      }
+    };
+    window.addEventListener("keydown", handleKeydown);
+    return () => {
+      window.removeEventListener("keydown", handleKeydown);
+    };
+  }, [cookie]);
 
   return (
     <Wrapper>
@@ -84,6 +95,7 @@ const Game = () => {
   );
 };
 
+//STYLING
 const Wrapper = styled.div`
   display: flex;
   height: 100vh;
