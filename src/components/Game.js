@@ -22,30 +22,34 @@ const calculateCookiesPerTick = (purchasedItems) => {
 
 const Game = () => {
   // TODO: Replace this with React state!
-  const [cookie, setCookie] = useState(500);
+  const [cookie, setCookie] = useState(1000);
   const [purchasedItems, setPurchasedItems] = useState({
     cursor: 0,
     grandma: 0,
     farm: 0,
   });
 
+  const CookiesPerTick =
+    purchasedItems.cursor +
+    purchasedItems.grandma * 10 +
+    purchasedItems.farm * 80;
+
   useInterval(() => {
     const numOfGeneratedCookies = calculateCookiesPerTick(purchasedItems);
     setCookie(cookie + numOfGeneratedCookies);
+    document.title = `${cookie.toLocaleString(
+      "en-CA"
+    )} cookies - Cookie Clicker Workshop`;
   }, 1000);
 
   return (
     <Wrapper>
       <GameArea>
         <Indicator>
-          <Total>{cookie} cookies</Total>
+          <Total>{cookie.toLocaleString("en-CA")} cookies</Total>
           {/* TODO: Calcuate the cookies per second and show it here: */}
-          <strong>
-            {purchasedItems.cursor +
-              purchasedItems.grandma * 10 +
-              purchasedItems.farm * 80}
-          </strong>{" "}
-          cookies per second
+          <strong>{CookiesPerTick.toLocaleString("en-CA")}</strong> cookies per
+          second
         </Indicator>
         <Button onClick={() => setCookie(cookie + 1)}>
           <Cookie src={cookieSrc} />
