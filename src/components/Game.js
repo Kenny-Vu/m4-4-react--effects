@@ -12,6 +12,14 @@ const items = [
   { id: "farm", name: "Farm", cost: 1000, value: 80 },
 ];
 
+const calculateCookiesPerTick = (purchasedItems) => {
+  return (
+    purchasedItems.cursor +
+    purchasedItems.grandma * 10 +
+    purchasedItems.farm * 80
+  );
+};
+
 const Game = () => {
   // TODO: Replace this with React state!
   const [cookie, setCookie] = useState(500);
@@ -21,13 +29,23 @@ const Game = () => {
     farm: 0,
   });
 
+  useInterval(() => {
+    const numOfGeneratedCookies = calculateCookiesPerTick(purchasedItems);
+    setCookie(cookie + numOfGeneratedCookies);
+  }, 1000);
+
   return (
     <Wrapper>
       <GameArea>
         <Indicator>
           <Total>{cookie} cookies</Total>
           {/* TODO: Calcuate the cookies per second and show it here: */}
-          <strong>0</strong> cookies per second
+          <strong>
+            {purchasedItems.cursor +
+              purchasedItems.grandma * 10 +
+              purchasedItems.farm * 80}
+          </strong>{" "}
+          cookies per second
         </Indicator>
         <Button onClick={() => setCookie(cookie + 1)}>
           <Cookie src={cookieSrc} />
