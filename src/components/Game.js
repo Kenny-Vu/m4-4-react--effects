@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -13,22 +13,21 @@ const items = [
 
 const Game = () => {
   // TODO: Replace this with React state!
-  const numCookies = 100;
-  const purchasedItems = {
+  const [cookie, setCookie] = useState(500);
+  const [purchasedItems, setPurchasedItems] = useState({
     cursor: 0,
     grandma: 0,
     farm: 0,
-  };
-
+  });
   return (
     <Wrapper>
       <GameArea>
         <Indicator>
-          <Total>{numCookies} cookies</Total>
+          <Total>{cookie} cookies</Total>
           {/* TODO: Calcuate the cookies per second and show it here: */}
           <strong>0</strong> cookies per second
         </Indicator>
-        <Button>
+        <Button onClick={() => setCookie(cookie + 1)}>
           <Cookie src={cookieSrc} />
         </Button>
       </GameArea>
@@ -36,13 +35,26 @@ const Game = () => {
       <ItemArea>
         <SectionTitle>Items:</SectionTitle>
         <ul>
-          {items.map((item) => {
+          {items.map((item, index) => {
             return (
               <Item
                 key={item.id}
                 itemInfo={item}
                 handleClick={(event) => {
-                  console.log("quack!");
+                  if (cookie >= item.cost) {
+                    let numOwned = purchasedItems[`${item.id}`];
+                    let itemKey = Object.keys(purchasedItems)[index];
+                    let test = purchasedItems;
+                    //IT WORKS, BUT THIS IS A BAD WAY TO DO IT, GET HELP TO FIX IT
+                    test[`${itemKey}`] = numOwned + 1;
+                    console.log(test);
+                    // setPurchasedItems({
+                    //   ...purchasedItems,
+                    //   test: numOwned + 1,
+                    // });
+                    setCookie(cookie - item.cost);
+                    console.log(purchasedItems);
+                  } else window.alert("not enough cookies...");
                 }}
                 numOwned={purchasedItems[`${item.id}`]}
               />
@@ -64,10 +76,18 @@ const GameArea = styled.div`
   display: grid;
   place-items: center;
 `;
-const Button = styled.button`
+export const Button = styled.button`
   border: none;
   background: transparent;
   cursor: pointer;
+  transition-duration: 0.2s;
+  &&:active {
+    transform: scale(0.9);
+    outline: #24a0ed solid;
+  }
+  &&:focus {
+    outline: #24a0ed solid;
+  }
 `;
 
 const Cookie = styled.img`

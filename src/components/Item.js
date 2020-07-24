@@ -28,6 +28,14 @@ const ItemContainer = styled.button`
   width: 600px;
   height: 100px;
   padding: 1rem;
+  transition-duration: 0.2s;
+  &&:active {
+    transform: scale(0.9);
+    outline: #24a0ed solid;
+  }
+  &&:focus {
+    outline: #24a0ed solid;
+  }
   div {
     display: flex;
     flex-direction: column;
