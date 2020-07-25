@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
 
-const Item = ({ itemInfo, numOwned, handleClick }) => {
+const Item = ({ itemInfo, numOwned, handleClick, itemList }) => {
   const { name, cost, value } = itemInfo;
+  const itemRef = useRef(null);
+  useEffect(() => {
+    if (itemList[0].name === name) {
+      itemRef.current.focus();
+    }
+  }, []);
   return (
-    <ItemContainer onClick={handleClick}>
+    <ItemContainer onClick={handleClick} ref={itemRef}>
       <div>
         <h4>{name}</h4>
         <span>

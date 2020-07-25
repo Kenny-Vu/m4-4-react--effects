@@ -22,7 +22,7 @@ const calculateCookiesPerTick = (purchasedItems) => {
 
 const Game = () => {
   // TODO: Replace this with React state!
-  const [cookie, setCookie] = useState(1000);
+  const [cookie, setCookie] = useState(0);
   const [purchasedItems, setPurchasedItems] = useState({
     cursor: 0,
     grandma: 0,
@@ -75,6 +75,7 @@ const Game = () => {
               <Item
                 key={item.id}
                 itemInfo={item}
+                itemList={items}
                 handleClick={(event) => {
                   if (cookie >= item.cost) {
                     setCookie(cookie - item.cost);
