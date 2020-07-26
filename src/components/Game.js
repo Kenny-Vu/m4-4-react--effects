@@ -20,8 +20,22 @@ const calculateCookiesPerTick = (purchasedItems) => {
   );
 };
 
+const useKeyDown = (code, callback) => {
+  useEffect(() => {
+    const handleKeydown = (ev) => {
+      if (ev.code === code) {
+        callback();
+      }
+    };
+    window.addEventListener("keydown", handleKeydown);
+    return () => {
+      window.removeEventListener("keydown", handleKeydown);
+    };
+  });
+};
+
+//MAIN FUNCTION
 const Game = () => {
-  // TODO: Replace this with React state!
   const [cookie, setCookie] = useState(0);
   const [purchasedItems, setPurchasedItems] = useState({
     cursor: 0,
@@ -41,17 +55,7 @@ const Game = () => {
     )} cookies - Cookie Clicker Workshop`;
   }, 1000);
 
-  useEffect(() => {
-    const handleKeydown = (ev) => {
-      if (ev.code === "Space") {
-        setCookie(cookie + 1);
-      }
-    };
-    window.addEventListener("keydown", handleKeydown);
-    return () => {
-      window.removeEventListener("keydown", handleKeydown);
-    };
-  }, [cookie]);
+  useKeyDown("Space", () => setCookie(cookie + 1));
 
   return (
     <Wrapper>
