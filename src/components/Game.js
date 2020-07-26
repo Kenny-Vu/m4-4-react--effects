@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import cookieSrc from "../cookie.svg";
 import Item from "./Item";
 import useInterval from "../hooks/use-interval.hook";
+import useKeyDown from "../hooks/useKeyDown";
 
 const items = [
   { id: "cursor", name: "Cursor", cost: 10, value: 1 },
@@ -18,20 +19,6 @@ const calculateCookiesPerTick = (purchasedItems) => {
     purchasedItems.grandma * 10 +
     purchasedItems.farm * 80
   );
-};
-
-const useKeyDown = (code, callback) => {
-  useEffect(() => {
-    const handleKeydown = (ev) => {
-      if (ev.code === code) {
-        callback();
-      }
-    };
-    window.addEventListener("keydown", handleKeydown);
-    return () => {
-      window.removeEventListener("keydown", handleKeydown);
-    };
-  });
 };
 
 //MAIN FUNCTION
@@ -55,7 +42,7 @@ const Game = () => {
     )} cookies - Cookie Clicker Workshop`;
   }, 1000);
 
-  useKeyDown("Space", () => setCookie(cookie + 1));
+  useKeyDown("Space", () => setCookie(cookie + 1)); //custom hook called
 
   return (
     <Wrapper>
