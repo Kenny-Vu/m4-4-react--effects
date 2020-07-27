@@ -6,6 +6,7 @@ import cookieSrc from "../cookie.svg";
 import Item from "./Item";
 import useInterval from "../hooks/use-interval.hook";
 import useKeyDown from "../hooks/useKeyDown";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 const items = [
   { id: "cursor", name: "Cursor", cost: 10, value: 1 },
@@ -36,13 +37,15 @@ const Game = () => {
 
   useInterval(() => {
     const numOfGeneratedCookies = calculateCookiesPerTick(purchasedItems);
-    setCookie(cookie + numOfGeneratedCookies);
-    document.title = `${cookie.toLocaleString(
-      "en-CA"
-    )} cookies - Cookie Clicker Workshop`;
   }, 1000);
 
-  useKeyDown("Space", () => setCookie(cookie + 1)); //custom hook called
+  //custom hook call to update title on mount
+  useDocumentTitle(
+    `${cookie.toLocaleString("en-CA")} cookies - Cookie Clicker Workshop`,
+    "Cookie Clicker Workshop"
+  );
+
+  useKeyDown("Space", () => setCookie(cookie + 1)); //custom hook called for keydown event
 
   return (
     <Wrapper>
