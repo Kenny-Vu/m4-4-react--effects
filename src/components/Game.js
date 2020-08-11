@@ -37,6 +37,7 @@ const Game = () => {
 
   useInterval(() => {
     const numOfGeneratedCookies = calculateCookiesPerTick(purchasedItems);
+    setCookie(cookie + CookiesPerTick);
   }, 1000);
 
   //custom hook call to update title on mount
